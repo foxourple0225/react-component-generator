@@ -1,30 +1,5 @@
-@font-face {
-  font-family: Galmuri14;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../node_modules/galmuri/dist/Galmuri14.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: Galmuri11;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../node_modules/galmuri/dist/Galmuri11.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: Galmuri11;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../node_modules/galmuri/dist/Galmuri11-Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: GalmuriMono11;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../node_modules/galmuri/dist/GalmuriMono11.woff2') format('woff2');
-}
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
 
 * {
   margin: 0;
@@ -32,42 +7,66 @@
   box-sizing: border-box;
 }
 
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 :root {
   color-scheme: light;
-  font-synthesis: none;
-  -webkit-font-smoothing: none;
 
-  --desktop: #6b8fd6;
-  --desktop-dither: #5a7ec9;
-  --win: #e8e8e8;
-  --win-shade: #c4c4c4;
+  --canvas: #f4f0ff;
+  --ink: #1a1340;
+  --ink-soft: #5b5486;
   --paper: #ffffff;
-  --ink: #000000;
-  --marigold: #ffc933;
-  --danger: #d12b2b;
-  --success: #1f9d55;
+  --pink: #ff3d9a;
+  --violet: #6a4cff;
+  --cyan: #18d4f0;
+  --lemon: #ffe45c;
+  --danger: #d6243c;
+  --success: #0f9f7a;
 
-  --font-body: Galmuri14, 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, sans-serif;
-  --font-ui: Galmuri11, Galmuri14, 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, sans-serif;
-  --font-code: GalmuriMono11, 'D2Coding', Consolas, 'Courier New', monospace;
+  --glass: rgba(255, 255, 255, 0.58);
+  --glass-strong: rgba(255, 255, 255, 0.82);
+  --glass-edge: rgba(255, 255, 255, 0.9);
+  --line: rgba(26, 19, 64, 0.1);
 
-  --shadow: 3px 3px 0 var(--ink);
+  --iridescent: conic-gradient(
+    from var(--angle),
+    var(--pink),
+    var(--violet),
+    var(--cyan),
+    var(--lemon),
+    var(--pink)
+  );
+
+  --font-body: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui,
+    sans-serif;
+  --font-code: 'JetBrains Mono Variable', 'D2Coding', Consolas, monospace;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  background: var(--canvas);
 }
 
 body {
   min-height: 100vh;
-  background-color: var(--desktop);
-  background-image: conic-gradient(
-    var(--desktop-dither) 25%,
-    transparent 0 50%,
-    var(--desktop-dither) 0 75%,
-    transparent 0
-  );
-  background-size: 4px 4px;
+  background:
+    radial-gradient(60vmax 50vmax at 8% -10%, rgba(255, 61, 154, 0.38), transparent 60%),
+    radial-gradient(55vmax 50vmax at 98% 6%, rgba(106, 76, 255, 0.4), transparent 60%),
+    radial-gradient(60vmax 45vmax at 70% 108%, rgba(24, 212, 240, 0.38), transparent 60%),
+    radial-gradient(40vmax 30vmax at 0% 80%, rgba(255, 228, 92, 0.38), transparent 60%),
+    var(--canvas);
+  background-attachment: fixed;
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 450;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -82,11 +81,11 @@ button {
 }
 
 ::selection {
-  background: var(--ink);
+  background: var(--violet);
   color: var(--paper);
 }
 
 :focus-visible {
-  outline: 2px dashed var(--ink);
+  outline: 3px solid var(--violet);
   outline-offset: 3px;
 }

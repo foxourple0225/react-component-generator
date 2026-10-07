@@ -26,4 +26,62 @@ describe('PromptInput', () => {
     render(<PromptInput onGenerate={vi.fn()} isLoading={true} />);
     expect(screen.getByRole('button', { name: '생성 중...' })).toBeDisabled();
   });
+
+  describe('길이 제한', () => {
+    const OVER = 'a'.repeat(501);
+
+    it('입력 글자 수를 "현재 / 500" 형식으로 보여준다', async () => {
+      const user = userEvent.setup();
+      render(<PromptInput onGenerate={vi.fn()} isLoading={false} />);
+
+      expect(screen.getByText('0 / 500')).toBeInTheDocument();
+      await user.type(screen.getByRole('textbox'), '카드');
+      expect(screen.getByText('2 / 500')).toBeInTheDocument();
+    });
+
+    it('500자를 넘으면 오류 메시지를 보여준다', async () => {
+      const user = userEvent.setup();
+      render(<PromptInput onGenerate={vi.fn()} isLoading={false} />);
+
+      await user.click(screen.getByRole('textbox'));
+      await user.paste(OVER);
+
+      expect(screen.getByRole('alert')).toHaveTextContent('프롬프트는 500자 이하로 입력해주세요.');
+    });
+
+    it('500자를 넘으면 생성 버튼이 비활성이다', async () => {
+      const user = userEvent.setup();
+      render(<PromptInput onGenerate={vi.fn()} isLoading={false} />);
+
+      await user.click(screen.getByRole('textbox'));
+      await user.paste(OVER);
+
+      expect(screen.getByRole('button', { name: '컴포넌트 생성' })).toBeDisabled();
+    });
+
+    it('500자를 넘은 상태에서 Ctrl+Enter를 눌러도 onGenerate가 호출되지 않는다', async () => {
+      const onGenerate = vi.fn();
+      const user = userEvent.setup();
+      render(<PromptInput onGenerate={onGenerate} isLoading={false} />);
+
+      await user.click(screen.getByRole('textbox'));
+      await user.paste(OVER);
+      await user.keyboard('{Control>}{Enter}{/Control}');
+
+      expect(onGenerate).not.toHaveBeenCalled();
+    });
+
+    it('정확히 500자는 오류 없이 생성할 수 있다', async () => {
+      const onGenerate = vi.fn();
+      const user = userEvent.setup();
+      render(<PromptInput onGenerate={onGenerate} isLoading={false} />);
+
+      await user.click(screen.getByRole('textbox'));
+      await user.paste('a'.repeat(500));
+      await user.click(screen.getByRole('button', { name: '컴포넌트 생성' }));
+
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      expect(onGenerate).toHaveBeenCalledTimes(1);
+    });
+  });
 });

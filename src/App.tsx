@@ -50,19 +50,23 @@ function App() {
     <div className="app">
       <header className="menubar">
         <div className="menubar-brand">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            shapeRendering="crispEdges"
-            aria-hidden="true"
-          >
-            <rect x="1" y="2" width="14" height="12" fill="#000" />
-            <rect x="2" y="3" width="12" height="10" fill="#e8e8e8" />
-            <rect x="3" y="4" width="10" height="1" fill="#000" />
-            <rect x="3" y="6" width="10" height="1" fill="#000" />
-            <rect x="2" y="8" width="12" height="1" fill="#000" />
-            <rect x="3" y="9" width="10" height="3" fill="#ffc933" />
+          <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+            <defs>
+              <linearGradient id="brand-orb" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#ff3d9a" />
+                <stop offset="0.55" stopColor="#6a4cff" />
+                <stop offset="1" stopColor="#18d4f0" />
+              </linearGradient>
+            </defs>
+            <rect width="28" height="28" rx="9" fill="url(#brand-orb)" />
+            <path
+              d="M10 9 6 14l4 5M18 9l4 5-4 5"
+              fill="none"
+              stroke="#fff"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           <h1>컴포넌트 생성기</h1>
         </div>
@@ -144,16 +148,19 @@ function App() {
         {components.length === 0 && !isLoading && (
           <Window title="빈 폴더" className="window--open">
             <div className="empty-body">
-              <svg
-                width="96"
-                height="78"
-                viewBox="0 0 16 13"
-                shapeRendering="crispEdges"
-                aria-hidden="true"
-              >
-                <path d="M0 1h6v1h1v1h9v10H0z" fill="#000" />
-                <path d="M1 2h4v1h1v1h9v8H1z" fill="#ffc933" />
-                <path d="M1 6h14v1H1z" fill="#000" />
+              <svg width="104" height="104" viewBox="0 0 104 104" aria-hidden="true">
+                <defs>
+                  <linearGradient id="empty-a" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stopColor="#ff3d9a" />
+                    <stop offset="1" stopColor="#6a4cff" />
+                  </linearGradient>
+                  <linearGradient id="empty-b" x1="1" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#ffe45c" />
+                    <stop offset="1" stopColor="#18d4f0" />
+                  </linearGradient>
+                </defs>
+                <rect x="6" y="22" width="64" height="64" rx="20" fill="url(#empty-b)" />
+                <rect x="30" y="8" width="64" height="64" rx="20" fill="url(#empty-a)" opacity="0.92" />
               </svg>
               <div>
                 <h2>아직 만든 컴포넌트가 없어요</h2>
