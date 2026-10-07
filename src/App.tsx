@@ -3,6 +3,7 @@ import { PromptInput } from './components/PromptInput';
 import { ComponentCard } from './components/ComponentCard';
 import { Window } from './components/Window';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
+import { storageUtils } from './utils/localStorage';
 import type { Provider } from './types';
 import './App.css';
 
@@ -14,12 +15,16 @@ const PROVIDER_CONFIG = {
 function App() {
   const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
-  const [provider, setProvider] = useState<Provider>('google');
+  const [provider, setProvider] = useState<Provider>(() => {
+    const saved = storageUtils.loadProvider();
+    return saved || 'google';
+  });
   const [envKeys, setEnvKeys] = useState<Record<Provider, boolean>>({
     anthropic: false,
     google: false,
   });
-  const { components, isLoading, error, generate, removeComponent, clearAll } =
+
+  const { components, promptHistory, isLoading, error, generate, removeComponent, clearAll } =
     useComponentGenerator();
 
   useEffect(() => {
@@ -28,6 +33,18 @@ function App() {
       .then((data) => setEnvKeys(data.envKeys))
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    storageUtils.saveProvider(provider);
+  }, [provider]);
+
+  useEffect(() => {
+    storageUtils.saveComponents(components);
+  }, [components]);
+
+  useEffect(() => {
+    storageUtils.savePromptHistory(promptHistory);
+  }, [promptHistory]);
 
   const hasEnvKey = envKeys[provider];
 

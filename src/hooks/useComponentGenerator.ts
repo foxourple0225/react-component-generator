@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'react';
+import { storageUtils } from '../utils/localStorage';
 import type { GeneratedComponent, Provider } from '../types';
 
 interface UseComponentGeneratorReturn {
   components: GeneratedComponent[];
+  promptHistory: string[];
   isLoading: boolean;
   error: string | null;
   generate: (prompt: string, apiKey: string | undefined, provider: Provider) => Promise<void>;
@@ -11,7 +13,12 @@ interface UseComponentGeneratorReturn {
 }
 
 export function useComponentGenerator(): UseComponentGeneratorReturn {
-  const [components, setComponents] = useState<GeneratedComponent[]>([]);
+  const [components, setComponents] = useState<GeneratedComponent[]>(() =>
+    storageUtils.loadComponents()
+  );
+  const [promptHistory, setPromptHistory] = useState<string[]>(() =>
+    storageUtils.loadPromptHistory()
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,6 +47,7 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
       };
 
       setComponents((prev) => [newComponent, ...prev]);
+      setPromptHistory((prev) => [prompt, ...prev.filter((p) => p !== prompt)].slice(0, 20));
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(message);
@@ -54,7 +62,9 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
 
   const clearAll = useCallback(() => {
     setComponents([]);
+    setPromptHistory([]);
+    storageUtils.clearAll();
   }, []);
 
-  return { components, isLoading, error, generate, removeComponent, clearAll };
+  return { components, promptHistory, isLoading, error, generate, removeComponent, clearAll };
 }
