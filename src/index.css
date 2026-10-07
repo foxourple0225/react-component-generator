@@ -1,0 +1,92 @@
+@font-face {
+  font-family: Galmuri14;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../node_modules/galmuri/dist/Galmuri14.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Galmuri11;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../node_modules/galmuri/dist/Galmuri11.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Galmuri11;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../node_modules/galmuri/dist/Galmuri11-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: GalmuriMono11;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../node_modules/galmuri/dist/GalmuriMono11.woff2') format('woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+  font-synthesis: none;
+  -webkit-font-smoothing: none;
+
+  --desktop: #6b8fd6;
+  --desktop-dither: #5a7ec9;
+  --win: #e8e8e8;
+  --win-shade: #c4c4c4;
+  --paper: #ffffff;
+  --ink: #000000;
+  --marigold: #ffc933;
+  --danger: #d12b2b;
+  --success: #1f9d55;
+
+  --font-body: Galmuri14, 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  --font-ui: Galmuri11, Galmuri14, 'Malgun Gothic', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  --font-code: GalmuriMono11, 'D2Coding', Consolas, 'Courier New', monospace;
+
+  --shadow: 3px 3px 0 var(--ink);
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--desktop);
+  background-image: conic-gradient(
+    var(--desktop-dither) 25%,
+    transparent 0 50%,
+    var(--desktop-dither) 0 75%,
+    transparent 0
+  );
+  background-size: 4px 4px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px dashed var(--ink);
+  outline-offset: 3px;
+}
