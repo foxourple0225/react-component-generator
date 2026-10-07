@@ -24,6 +24,18 @@ Tech Stack: React 19, TypeScript 5.9, Vite 8, Vitest 4, Testing Library, react-l
 - `.env`와 API 키를 커밋하거나 코드에 하드코딩하지 않는다. `.env`는 `.gitignore`에 등록되어 있다 (.gitignore:32).
 - 서버의 환경변수 키 값은 클라이언트로 내려보내지 않는다. `/api/config`는 존재 여부(boolean)만 반환한다 (server/index.ts:150-153). 키 값 자체를 응답에 포함하지 마라.
 
+### 보안 정책 (Agent 접근 차단)
+
+Agent는 다음 민감 파일들을 **절대로 읽거나 수정할 수 없다** (.claude/settings.json:permissions.deny 규칙):
+- `.env*` — 환경변수 파일 (`.env`, `.env.local`, `.env.production` 등)
+- `**/*credentials*`, `**/*secret*`, `**/*password*` — 자격증명, 시크릿, 암호 관련 파일
+- `**/*api*key*`, `**/*private*key*` — API 키, 개인 키 파일
+- `.aws/**`, `.ssh/**` — AWS 및 SSH 설정
+- `config/secrets/**` — 시크릿 설정 디렉토리
+- `dist/`, `node_modules/`, `build/` — 빌드 산출물 (수정 불필요)
+
+이 규칙 위반 시도는 permission 오류로 차단된다.
+
 ### Do's & Don'ts
 
 - Do: 타입 import는 `import type`을 사용한다. `verbatimModuleSyntax`가 켜져 있다 (tsconfig.app.json:40). 예: src/hooks/useComponentGenerator.ts:2.

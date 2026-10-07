@@ -63,7 +63,7 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
   const clearAll = useCallback(() => {
     setComponents([]);
     setPromptHistory([]);
-    storageUtils.clearAll();
+    // Storage persistence is handled by App.tsx useEffects
   }, []);
 
   return { components, promptHistory, isLoading, error, generate, removeComponent, clearAll };

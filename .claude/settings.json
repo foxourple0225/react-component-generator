@@ -1,5 +1,21 @@
 {
   "worktree": {
     "baseRef": "head"
+  },
+  "permissions": {
+    "deny": [
+      "**/.env*",
+      "**/*credentials*",
+      "**/*secret*",
+      "**/*password*",
+      "**/*api*key*",
+      "**/*private*key*",
+      "**/.aws/**",
+      "**/.ssh/**",
+      "**/config/secrets/**",
+      "**/dist/**",
+      "**/node_modules/**",
+      "**/build/**"
+    ]
   }
 }
