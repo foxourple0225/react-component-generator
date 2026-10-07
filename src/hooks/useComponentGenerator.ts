@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { storageUtils } from '../utils/localStorage';
 import type { GeneratedComponent, Provider } from '../types';
 
 interface UseComponentGeneratorReturn {
@@ -11,9 +12,13 @@ interface UseComponentGeneratorReturn {
   clearAll: () => void;
 }
 
-export function useComponentGenerator(initialComponents: GeneratedComponent[] = [], initialPromptHistory: string[] = []): UseComponentGeneratorReturn {
-  const [components, setComponents] = useState<GeneratedComponent[]>(initialComponents);
-  const [promptHistory, setPromptHistory] = useState<string[]>(initialPromptHistory);
+export function useComponentGenerator(): UseComponentGeneratorReturn {
+  const [components, setComponents] = useState<GeneratedComponent[]>(() =>
+    storageUtils.loadComponents()
+  );
+  const [promptHistory, setPromptHistory] = useState<string[]>(() =>
+    storageUtils.loadPromptHistory()
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -57,6 +62,8 @@ export function useComponentGenerator(initialComponents: GeneratedComponent[] = 
 
   const clearAll = useCallback(() => {
     setComponents([]);
+    setPromptHistory([]);
+    storageUtils.clearAll();
   }, []);
 
   return { components, promptHistory, isLoading, error, generate, removeComponent, clearAll };

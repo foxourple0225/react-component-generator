@@ -6,9 +6,32 @@ const STORAGE_KEYS = {
   PROMPT_HISTORY: 'app.promptHistory',
 } as const;
 
+const VALID_PROVIDERS: readonly Provider[] = ['anthropic', 'google'] as const;
+
 interface StoredComponent extends Omit<GeneratedComponent, 'createdAt'> {
   createdAt: string;
 }
+
+const isValidProvider = (value: unknown): value is Provider => {
+  return typeof value === 'string' && VALID_PROVIDERS.includes(value as Provider);
+};
+
+const isValidDate = (dateString: string): boolean => {
+  const date = new Date(dateString);
+  return !Number.isNaN(date.getTime());
+};
+
+const isStoredComponent = (obj: unknown): obj is StoredComponent => {
+  if (typeof obj !== 'object' || obj === null) return false;
+  const c = obj as Record<string, unknown>;
+  return (
+    typeof c.id === 'string' &&
+    typeof c.prompt === 'string' &&
+    typeof c.code === 'string' &&
+    typeof c.createdAt === 'string' &&
+    isValidDate(c.createdAt)
+  );
+};
 
 export const storageUtils = {
   saveProvider(provider: Provider): void {
@@ -21,7 +44,8 @@ export const storageUtils = {
 
   loadProvider(): Provider | null {
     try {
-      return (localStorage.getItem(STORAGE_KEYS.PROVIDER) || null) as Provider | null;
+      const value = localStorage.getItem(STORAGE_KEYS.PROVIDER);
+      return isValidProvider(value) ? value : null;
     } catch {
       return null;
     }
@@ -44,11 +68,15 @@ export const storageUtils = {
       const stored = localStorage.getItem(STORAGE_KEYS.COMPONENTS);
       if (!stored) return [];
 
-      const parsed: StoredComponent[] = JSON.parse(stored);
-      return parsed.map((c) => ({
-        ...c,
-        createdAt: new Date(c.createdAt),
-      }));
+      const parsed: unknown = JSON.parse(stored);
+      if (!Array.isArray(parsed)) return [];
+
+      return parsed
+        .filter(isStoredComponent)
+        .map((c) => ({
+          ...c,
+          createdAt: new Date(c.createdAt),
+        }));
     } catch {
       return [];
     }

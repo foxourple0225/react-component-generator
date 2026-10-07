@@ -24,10 +24,8 @@ function App() {
     google: false,
   });
 
-  const savedComponents = storageUtils.loadComponents();
-  const savedPromptHistory = storageUtils.loadPromptHistory();
   const { components, promptHistory, isLoading, error, generate, removeComponent, clearAll } =
-    useComponentGenerator(savedComponents, savedPromptHistory);
+    useComponentGenerator();
 
   useEffect(() => {
     fetch('/api/config')

@@ -1,0 +1,23 @@
+{
+  "skill_name": "create-pr",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "현재 변경사항으로 PR을 만들어줘. 한글 템플릿을 사용해.",
+      "expected_output": "git log와 diff를 분석해 PR 제목/본문을 생성하고, 한글 템플릿을 적용한 후 fork agent가 백그라운드에서 PR 생성. PR 링크와 요약 정보 반환.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "PR을 만들어줘. 영문 템플릿으로 해. --lang en",
+      "expected_output": "git log와 diff를 분석해 PR 제목/본문을 생성하고, 영문 템플릿을 적용한 후 fork agent가 백그라운드에서 PR 생성. PR 링크와 요약 정보(영문) 반환.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "지금까지의 작업을 PR로 올려줄 수 있어? 기본 설정으로.",
+      "expected_output": "현재 branch의 커밋 이력 확인 후, 한글 템플릿으로 PR 생성. 제목은 최근 커밋에서 추출, 본문은 변경사항 요약. fork 완료 후 PR URL 반환.",
+      "files": []
+    }
+  ]
+}
