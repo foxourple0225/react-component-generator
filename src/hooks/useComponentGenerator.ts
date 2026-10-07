@@ -3,6 +3,7 @@ import type { GeneratedComponent, Provider } from '../types';
 
 interface UseComponentGeneratorReturn {
   components: GeneratedComponent[];
+  promptHistory: string[];
   isLoading: boolean;
   error: string | null;
   generate: (prompt: string, apiKey: string | undefined, provider: Provider) => Promise<void>;
@@ -10,8 +11,9 @@ interface UseComponentGeneratorReturn {
   clearAll: () => void;
 }
 
-export function useComponentGenerator(): UseComponentGeneratorReturn {
-  const [components, setComponents] = useState<GeneratedComponent[]>([]);
+export function useComponentGenerator(initialComponents: GeneratedComponent[] = [], initialPromptHistory: string[] = []): UseComponentGeneratorReturn {
+  const [components, setComponents] = useState<GeneratedComponent[]>(initialComponents);
+  const [promptHistory, setPromptHistory] = useState<string[]>(initialPromptHistory);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,6 +42,7 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
       };
 
       setComponents((prev) => [newComponent, ...prev]);
+      setPromptHistory((prev) => [prompt, ...prev.filter((p) => p !== prompt)].slice(0, 20));
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(message);
@@ -56,5 +59,5 @@ export function useComponentGenerator(): UseComponentGeneratorReturn {
     setComponents([]);
   }, []);
 
-  return { components, isLoading, error, generate, removeComponent, clearAll };
+  return { components, promptHistory, isLoading, error, generate, removeComponent, clearAll };
 }
